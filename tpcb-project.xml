@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project>
+    <database name='database'>
+        <schemas>
+            <schema path='tpcb-ddl.sql' />
+        </schemas>
+        <procedures>
+         <procedure class='com.CheckCatalog' />
+            <procedure class='com.tpcbprocedures.LoadBranch' />
+            <procedure class='com.tpcbprocedures.TPCBTransaction' />
+            <procedure class='com.tpcbprocedures.TPCBTransactionMP' />
+            <procedure class='com.tpcbprocedures.ResetBranch' />
+            <procedure class='com.tpcbprocedures.LoadStatus' />
+            <procedure class='com.tpcbprocedures.DBCheck' />
+            <procedure class='com.tpcbprocedures.DBCheck1' />
+            <procedure class='com.tpcbprocedures.DBCheckBalance' />
+            <procedure class='com.tpcbprocedures.TPCBTransaction2Shot'/>
+            <procedure class='com.tpcbprocedures.TPCBTransactionMP2Shot'/>
+        </procedures>
+        <classdependencies>
+          <classdependency class='com.TPCBConstants' />
+          <classdependency class='com.tpcbprocedures.ByteBuilder' />
+        </classdependencies>
+        <partitions>
+            <partition table='BRANCH' column='B_ID' />
+            <partition table='ACCOUNT' column='A_B_ID' />
+            <partition table='TELLER' column='T_B_ID' />
+            <partition table='HISTORY' column='H_B_ID' />
+        </partitions>
+    </database>
+</project>

@@ -1,0 +1,62 @@
+TPCB and TPCC for VoltDB and CVoltDB, for Voltdb v4
+Note: tpcb was written by Betty, derived from tpcc provided with Voltdb distro
+  CVoltDB tpcc was written by Weiwei, derived from VoltDB tpcc
+
+for version 4, we have only pure Voltdb sources, no CVoltDB support
+
+To run with VoltDB:
+Copy everything to ../tpc-bc-v4
+
+To run with a Voltdb server in dir at ../spot
+
+To run server: single host
+Single Host: uses deployment.xml
+bash run_tpc[bc]1.sh spot catalog-v      for Voltdb server
+
+bash run_tpc[bc]1.sh spot server > /mnt/ramdisk/server.log   (either server)
+(or use runservers1.sh, which uses /mnt/ramdisk for output)
+
+Multihost: uses mhx_deployment.xml x= 2, 3, or 4
+--Check host ids in run_tpc[bc]x.sh
+bash run_tpc[bc]x.sh spot catalog-v      for Voltdb server at ../spot
+bash run_tpc[bc]x.sh spot server > /mnt/ramdisk/server.log   (either server)
+
+The running of servers on multiple hosts is automated by the runserversx.sh series
+They output to /mnt/ramdisk, the ramdisk created at bootup by fstab entry
+bash runserversx.sh tpc[bc] spot catalog-v    for Voltdb server, K=0
+  so for example for escrow tpcb using CVoltdb in apr6 on 4 hosts, K=0:
+  logon to cv2, the assumed controlling host
+  cd tpc-bc-v4  (copy of tpc-bc4 available on all 4 hosts)
+  bash runservers4.sh tpcb apr6 catalog-v    will run server on 4 hosts
+  Note: don't use " > output-file" with runserversx.sh
+  for asserts: bash runservers4.sh tpcb apr6 catalog-v -ea
+
+For K=1 replication, not available in v4 for community edition of VoltDB
+bash runserversxk1.sh tpc[bc] spot catalog-cv|catalog-v [-ea]
+
+Running clients: TPCB needs MP% argument, but TPCC does not
+
+To run TPCB client with 15% MP:
+Single host
+bash run_tpcb1.sh spot client 15 > client.log    (space needed between 5 and >)
+or, for enabled asserts
+bash run_tpcb1.sh spot client-ea 15 > client.log 
+
+Multiple (2 here) server hosts, client on one host:
+bash run_tpcb2.sh spot client 15 > client.log   (space needed between 5 and >)
+With replication:
+bash run_tpcb2k1.sh spot client 15 > ...
+
+TPC-C: run_tpcc1.sh for single host, like run_tpcb1.sh
+--but no MP_PERCENT arg as yet
+With replication:
+bash run_tpcc2k1.sh spot client > ...
+
+Sources
+src/com: top dir: benchmark drivers for all cases, 
+         subdirs: procedures and tpcbprocedures with CVoltdb annotations/escrow
+
+Other useful files:
+send-dir.sh, update-dirs.sh: send a dir from cv2 to all other hosts
+ckvolt.sh: check for server running on various cvx hosts
+
